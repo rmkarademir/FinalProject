@@ -14,9 +14,9 @@ namespace Core.Aspects.Autofac.Validation
         private Type _validatorType;
         public ValidationAspect(Type validatorType)
         {
-            if (!typeof(IValidator).IsAssignableFrom(validatorType))
+            if (!typeof(IValidator).IsAssignableFrom(validatorType))// verilen type bir validator türü mü? kontrolünü yapar.
             {
-                throw new System.Exception("Bu bir doğrulama ");
+                throw new System.Exception("Bu bir doğrulama sınıfı değil");
             }
 
             _validatorType = validatorType;
@@ -25,7 +25,7 @@ namespace Core.Aspects.Autofac.Validation
         {
             var validator = (IValidator)Activator.CreateInstance(_validatorType); // verilen validator tipene göre (ProductValidator gibi) new ler 
             var entityType = _validatorType.BaseType.GetGenericArguments()[0]; // verilen validator ın çalışma tipini,parametresini (Product gibi) bulur
-            var entities = invocation.Arguments.Where(t => t.GetType() == entityType); // verilen validator un parametresine eşit olan parametreleri (validator parametresi product ise methot için verilen parametrelerde product var mı diye bakar) bulur
+            var entities = invocation.Arguments.Where(t => t.GetType() == entityType); // invocation=methot(add,getall gibi), verilen validator un parametresine eşit olan parametreleri (validator parametresi product ise methot için verilen parametrelerde product var mı diye bakar) bulur
             foreach (var entity in entities)
             {
                 ValidationTool.Validate(validator, entity); // validationtool a göre validate eder; validator = productvalidator, entity = product gibi kullanılır
