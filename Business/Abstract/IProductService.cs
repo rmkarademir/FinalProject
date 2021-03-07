@@ -16,5 +16,6 @@ namespace Business.Abstract
         IDataResult<Product> GetById(int prdouctId);
         IResult Add(Product product);// void bir işlem olduğu için IResult kullandık. void yani geriye birşey döndürmüyor.
         IResult Update(Product product);
+        IResult AddTransactionalTest(Product product);
     }
 }
